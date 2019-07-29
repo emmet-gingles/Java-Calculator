@@ -1,88 +1,110 @@
 
 package calculator;
-import java.util.Scanner;
+import java.util.ArrayList;       /* Import arraylist */
+
 
 public class Calculator {
-
-    // function to add two numbers
+    
+    /* Function that adds two numbers */
     public double add(double num1, double num2){
-        // count the number of decimal places for each input parameter
+        /* Count the number of decimal places for each input parameter */
         int n1 = String.valueOf(num1).split("\\.")[1].length();
         int n2 = String.valueOf(num2).split("\\.")[1].length();
-        // find the higher number of decimal places
+        /* Find the higher number of decimal places */
         int numPlaces = Math.max(n1, n2);  
-        // add the two parameter, formated as a string with the greater number of decimal places
+        /* Add the two parameter, formated as a string with the greater number 
+            of decimal places 
+        */
         String s = String.format("%."+numPlaces+"f", num1 + num2);
-        // parse string to a double
-        Double d = Double.parseDouble(s);
-        return d;      
+        /* Parse string to a double and return it */
+        return Double.parseDouble(s);      
     }
     
-    // function to subtract two numbers
+    /* Function that subtracts two numbers */
     public double subtract(double num1, double num2){
         int n1 = String.valueOf(num1).split("\\.")[1].length();
         int n2 = String.valueOf(num2).split("\\.")[1].length();
         int numPlaces = Math.max(n1, n2); 
         String s = String.format("%."+numPlaces+"f", num1 - num2);
-        Double d = Double.parseDouble(s);
-        return d; 
+        return Double.parseDouble(s); 
     }
     
-    // function to multiply two numbers
+    /* Function that multiplies two numbers */
     public double multiply(double num1, double num2){
         int n1 = String.valueOf(num1).split("\\.")[1].length();
         int n2 = String.valueOf(num2).split("\\.")[1].length();
         int numPlaces = n1 + n2; 
         String s = String.format("%."+numPlaces+"f", num1 * num2);
-        Double d = Double.parseDouble(s);
-        return d;
+        return Double.parseDouble(s);
     }
     
-    // function to divide two numbers
+    /* Function that divides two numbers */
     public double divide(double num1, double num2){
-        // if we divide by zero it gives an error, this is to safeguard this
+        /* If we divide by zero it gives an error, this is to safeguard this */
         if (num1 == 0 || num2 == 0){
-            return 0000.0;
+            return 0.0;
         }
-        else{
-            int n1 = String.valueOf(num1).split("\\.")[1].length();
-            int n2 = String.valueOf(num2).split("\\.")[1].length();
-            int numPlaces = n1 + n2; 
-            String s = String.format("%."+numPlaces+"f", num1/num2);
-            Double d = Double.parseDouble(s);
-            return d; 
-        }
+        int n1 = String.valueOf(num1).split("\\.")[1].length();
+        int n2 = String.valueOf(num2).split("\\.")[1].length();
+        int numPlaces = n1 + n2; 
+        String s = String.format("%."+numPlaces+"f", num1/num2);
+        return Double.parseDouble(s); 
     }
     
-    // function to get the average of two numbers
-    public double average(double num1, double num2){
-        return Calculator.this.add(num1, num2)/2.0;
+    /* Function that returns the remainder of the division of two numbers */
+    public double modulus(double num1, double num2){
+        /* Call the divide function and floor the result to make it a 
+           whole number 
+        */
+        double div = Math.floor(this.divide(num1, num2));
+        /* Multiply the result by the second number and subtract this from the 
+           first number 
+        */
+        return this.subtract(num1, this.multiply(div, num2));
     }
     
-    // function to get the square root of a number
+    /* Function that returns the average of a set of numbers */
+    public double average(ArrayList<Double> nums){
+        /* Initialize variable as zero */
+        int total = 0;
+        /* Loop through each number and increase the total accordingly */
+        for(int i=0;i< nums.size();i++){
+            total += nums.get(i);
+        }
+        /* Divide the total by the number of numbers */
+        return this.divide(total, nums.size());
+    }
+    
+    /* Function that returns the square root of a number */
     public double squareRoot(int num){
+        /* Check that number is greater than zero */
+        if(num <= 0){
+            return 0.0;
+        }
+        /* Call the Maths square root function */
         return Math.sqrt(num);
     }
     
-    // function to calculate a number to the power of an exponent
-    public double exponent(double num, double power){
+    /* Function that returns a number to the power of an exponent */
+    public double power(double num, int power){
         return Math.pow(num, power);
     }
     
-    // function to calculate the factorial of a number
+    /* Function that returns the factorial of a number */
     public int factorial(int num){
-        // 0! = 1
+        /* Intialize variable as 1 */
+        int fact = 1;
+        /* 0! = 1 */
         if (num == 0){
             return 1;
-        }
-        int fact = 1;
-        // if num is greater than 0 then loop through numbers until you get to num
+        }        
+        /* If number is positive loop through each number from 1 up to the number */
         if (num > 0){
             for(int i=1;i <= num;i++){
                 fact = fact * i;
             }
         }
-        // if num is less than 0 then loop through numbers until you get to num
+        /* If number is negative loop through each number from -1 up to the number */
         else{
             for(int i=-1;i >= num;i--){
                 fact = fact * i;
@@ -90,219 +112,5 @@ public class Calculator {
         }
         return fact;
     }
-    
-    public static void main(String[] args) {
-        Calculator calc = new Calculator();
-        Scanner sc = new Scanner(System.in);
-        int num;                            // for integer inputs
-        double numInput1;                   // for double inputs
-        double numInput2;                   // for double inputs
-        String message = "Calculator \n Menu \n Type 1 for addition. Type 2 for subtraction."
-                + "\n Type 3 for multiplication. Type 4 for division."
-                + "\n Type 5 for average. Type 6 for squre root."
-                + "\n Type 7 for exponent. Type 8 for factorial."
-                + "\n Type 0 to exit program. \n";
-        System.out.print(message);
-        // continuous loop unless break is applied
-        while(true){
-                System.out.println("Enter choice");
-                System.out.println("Type m for menu");
-                // read the user input
-                String input = sc.next();
-                // if user enters 'm' then show menu
-                if(input.equals("m")){
-                    System.out.println(message);
-                }
-                // else input should be a number
-                else{
-                    try{
-                        num = Integer.parseInt(input);
-                        // exit the program if input is 0
-                        if(num == 0){
-                            break;
-                        }
-                        if(num < 1 || num > 8){
-                            System.out.println("Please enter a number between 1 and 8");
-                        }
-                        else{
-                            input = null;
-                            // depending on the number entered, a different mathematical function is applied
-                            switch(num){
-                                case 1:
-                                    System.out.println("Addition");
-                                    System.out.println("Type c to cancel");
-                                    // infinite loop unless break is applied
-                                    while(true){
-                                        System.out.println("Enter number 1");
-                                        // user input
-                                        input = sc.next();
-                                        // if the input is 'c' then the current operation is cancelled and the loop will be exited
-                                        if(input.equals("c")){
-                                            break;
-                                        }
-                                        try{
-                                            // try to parse the inputs as doubles
-                                            numInput1 = Double.parseDouble(input);                               
-                                            System.out.println("Enter number 2");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            // call the appropriate function and print result
-                                            System.out.println("RESULT: " + calc.add(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    } 
-                                    break;
-                                case 2:
-                                    System.out.println("Subtraction");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number 1");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        }  
-                                        try{
-                                            numInput1 = Double.parseDouble(input);                                   
-                                            System.out.println("Enter number 2");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            System.out.println("RESULT: " + calc.subtract(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }     
-                                    break;
-                                case 3:
-                                    System.out.println("Multiplication");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number 1");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        } 
-                                        try{
-                                            numInput1 = Double.parseDouble(input);                                   
-                                            System.out.println("Enter number 2");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            System.out.println("RESULT: " + calc.multiply(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                                case 4:
-                                    System.out.println("Division");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number 1");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        }
-                                        try{
-                                            numInput1 = Double.parseDouble(input);                                  
-                                            System.out.println("Enter number 2");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            System.out.println("RESULT: " + calc.divide(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                                case 5:
-                                    System.out.println("Average");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number 1");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        }      
-                                        try{
-                                            numInput1 = Double.parseDouble(input);                                  
-                                            System.out.println("Enter number 2");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            System.out.println("RESULT: " + calc.average(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                                case 6:
-                                    System.out.println("Square Root");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        } 
-                                        try{
-                                            num = Integer.parseInt(input);                                   
-                                            System.out.println("RESULT: " + calc.squareRoot(num));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                                case 7:
-                                    System.out.println("Exponent");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        } 
-                                        try{
-                                            numInput1 = Double.parseDouble(input);                                  
-                                            System.out.println("Enter exponent");
-                                            input = sc.next();
-                                            numInput2 = Double.parseDouble(input);
-                                            System.out.println("RESULT: " + calc.exponent(numInput1, numInput2));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                                case 8:
-                                    System.out.println("Factorial");
-                                    System.out.println("Type c to cancel");
-                                    while(true){
-                                        System.out.println("Enter number");
-                                        input = sc.next();
-                                        if(input.equals("c")){
-                                            break;
-                                        }  
-                                        try{
-                                            num = Integer.parseInt(input);                                  
-                                            System.out.println("RESULT: " + calc.factorial(num));
-                                        }
-                                        catch(Exception e){
-                                            System.out.println("Invalid input");
-                                        }
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-                    catch(Exception e){
-                        System.out.println("Invalid input");
-                    }    
-                }
-        }
-            sc.close();        
-    }
+
 }

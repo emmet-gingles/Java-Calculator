@@ -1,113 +1,109 @@
 
-import calculator.Calculator ;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import calculator.Calculator;                   /* Import Calcualtor class */
+import java.util.ArrayList;                     /* Import arraylist */
+import org.junit.Test;                          /* Import JUnit test */
+import static org.junit.Assert.assertEquals;    /* Import Junit's assertEquals function */
 
+/* TestCalculator class */
 public class testCalculator {
     
+    /* Instance of Calculator class */
     Calculator calc = new Calculator();
+    /* Difference between expected and actual values in tests */
+    double delta = 0.0;
     
-    // test for add function
+    /* Test for Calculator's add function */
     @Test
-    public void testAdd(){
-        double res = calc.add(2.5, 1.3);
-        assertEquals(3.8, res, 0);
-        double res2 = calc.add(-3.4, -1.5);
-        assertEquals(-4.9, res2, 0);
-        double res3 = calc.add(1.2, -0.3);
-        assertEquals(0.9, res3, 0);
-        double res4 = calc.add(-1.2, -0.31);
-        assertEquals(-1.51, res4, 0);
+    public void testAdd(){       
+        assertEquals(2, calc.add(1, 1), delta);
+        assertEquals(1, calc.add(2, -1), delta);
+        assertEquals(-3, calc.add(-2, -1), delta);
+        assertEquals(-4, calc.add(-2, -2), delta);
+        assertEquals(5.22, calc.add(2.12, 3.1), delta);
     }
     
-    // test for subtract function
+    /* Test for Calculator's subtract function */
     @Test
     public void testSubtract(){
-        double res = calc.subtract(2.0, 1.0);
-        assertEquals(1.0, res, 0);
-        double res2 = calc.subtract(1.6, -2.7);
-        assertEquals(4.3, res2, 0);
-        double res3 = calc.subtract(-3.6, -5.2);
-        assertEquals(1.6, res3, 0);
-        double res4 = calc.subtract(-3.6, -5.24);
-        assertEquals(1.64, res4, 0);
+        assertEquals(1, calc.subtract(2, 1), delta);
+        assertEquals(3, calc.subtract(2, -1), delta);
+        assertEquals(-1, calc.subtract(-2, -1), delta);
+        assertEquals(0, calc.subtract(-2, -2), delta);
+        assertEquals(-0.98, calc.subtract(2.12, 3.1), delta);
     }
     
-    // test for multiply function
+    /* Test for Calculator's multiply function */
     @Test
     public void testMultiply(){
-        double res = calc.multiply(2.0, 2.0);
-        assertEquals(4.0, res, 0);
-        double res2 = calc.multiply(2.0, 0.0);
-        assertEquals(0.0, res2, 0);
-        double res3 = calc.multiply(-2.0, 2.0);
-        assertEquals(-4.0, res3, 0);
-        double res4 = calc.multiply(-2.0, -2.0);
-        assertEquals(4.0, res4, 0);
+        assertEquals(4, calc.multiply(2, 2), delta);
+        assertEquals(0, calc.multiply(1, 0), delta);
+        assertEquals(4, calc.multiply(-2, -2), delta);
+        assertEquals(-4, calc.multiply(-2, 2), delta);
+        assertEquals(3.75, calc.multiply(2.5, 1.5), delta);
     }
     
-    // test for divide function
+    /* Test for Calculator's divide function */
     @Test
     public void testDivide(){
-        double res = calc.divide(5.5, 2.0);
-        assertEquals(2.75, res, 0);
-        double res2 = calc.divide(2.0, 0.0);
-        assertEquals(0.000, res2, 0);
-        double res3 = calc.divide(5.5, -2.0);
-        assertEquals(-2.75, res3, 0);
-        double res4 = calc.divide(-5.5, -2.0);
-        assertEquals(2.75, res4, 0);
+        assertEquals(2, calc.divide(2, 1), delta);
+        assertEquals(0, calc.divide(1, 0), delta);
+        assertEquals(1, calc.divide(-2, -2), delta);
+        assertEquals(-1, calc.divide(-2, 2), delta);
+        assertEquals(1.5, calc.divide(3.75, 2.5), delta);
     }
     
-    // test for average function
+    /* Test for Calculator's modulus function */
+    @Test
+    public void testModulus(){
+        assertEquals(0, calc.modulus(4, 2), delta);
+        assertEquals(1, calc.modulus(3, 2), delta);
+        assertEquals(.5, calc.modulus(2.5, 2), delta);
+        assertEquals(2, calc.modulus(2, 0), delta);
+    }
+    
+    /* Test for Calculator's average function */
+    /* Before each test the arraylist is cleared and new numbers are added */
     @Test
     public void testAverage(){
-        double res = calc.average(5.0, 2.0);
-        assertEquals(3.5, res, 0);
-        double res2 = calc.average(5.0, -2.0);
-        assertEquals(1.5, res2, 0);
-        double res3 = calc.average(-5.0, -2.0);
-        assertEquals(-3.5, res3, 0);
-        double res4 = calc.average(5.0, 2.02);
-        assertEquals(3.51, res4, 0);
+        ArrayList <Double> nums = new ArrayList<>();
+        nums.add(2.0); nums.add(2.0);
+        assertEquals(2, calc.average(nums), delta);
+        nums.clear();
+        nums.add(2.0); nums.add(2.0); nums.add(3.0);
+        assertEquals(2.33, calc.average(nums), delta);
+        nums.clear();
+        nums.add(-2.0); nums.add(-2.0);
+        assertEquals(-2.0, calc.average(nums), delta);
     }
     
-    // test for square root function
+    /* Test for Calculator's square root function */
     @Test
     public void testSquareRoot(){
-        double res = calc.squareRoot(144);
-        assertEquals(12, res, 0);
-        double res2 = calc.squareRoot(64);
-        assertEquals(8, res2, 0);
-        double res3 = calc.squareRoot(25);
-        assertEquals(5, res3, 0);
+        assertEquals(5, calc.squareRoot(25), delta);
+        assertEquals(10, calc.squareRoot(100), delta);
+        assertEquals(0, calc.squareRoot(-1), delta);
     }
     
-    // test for exponent function
+    /* Test for Calculator's power function */
+    /* Any number to the power of 1 is itself */
+    /* Any number to the power of 0 is 1 */
+    /* If the exponent is negative then 1 is divided by the first number */
     @Test
-    public void testExponent(){
-        double res = calc.exponent(3.0, 3.0);
-        assertEquals(27.0, res, 0);
-        double res2 = calc.exponent(5.0, 2.0);
-        assertEquals(25.0, res2, 0);
-        double res3 = calc.exponent(-5.0, 2.0);
-        assertEquals(25.0, res3, 0);
-        double res4 = calc.exponent(5.0, 0.0);
-        assertEquals(1.0, res4, 0);
+    public void testPower(){
+        assertEquals(4, calc.power(2, 2), delta);
+        assertEquals(27, calc.power(3, 3), delta);
+        assertEquals(2, calc.power(2, 1), delta);
+        assertEquals(1, calc.power(2, 0), delta);
+        assertEquals(.25, calc.power(2, -2), delta);
     }
     
-    // test for factorial function
+    /* Test for Calculator's factorial function */
     @Test
     public void testFactorial(){
-        int res = calc.factorial(3);
-        assertEquals(6, res, 0);
-        int res2 = calc.factorial(4);
-        assertEquals(24, res2, 0);
-        int res3 = calc.factorial(5);
-        assertEquals(120, res3, 0);
-        int res4 = calc.factorial(0);
-        assertEquals(1, res4, 0);
-        int res5 = calc.factorial(-3);
-        assertEquals(-6, res5, 0);
+        assertEquals(1, calc.factorial(0), delta);
+        assertEquals(2, calc.factorial(2), delta);
+        assertEquals(6, calc.factorial(3), delta);
+        assertEquals(24, calc.factorial(4), delta);
+        assertEquals(-6, calc.factorial(-3), delta);
     }
 }
